@@ -153,7 +153,6 @@ namespace MusicConnection
 
             var chosenMusician = musiciansList[1].Name;
             var chosenYear = 2000;
-            Console.WriteLine($"");
             var findSongs =
                 from musician in musiciansList
                 join album in albumList on musician.MusicianId equals album.MusicianId into listAlbums
