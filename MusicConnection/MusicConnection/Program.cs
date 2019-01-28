@@ -86,18 +86,16 @@ namespace MusicConnection
             }
 
             var musiciansList = new SqlConnection(connectionString).Query<Musician>("select * from Musicians").ToList();
-            var musicianList= musiciansList.OrderBy(musician => musician.Name);
+            var musicianList= musiciansList.OrderBy(musician => musician.Name).ToList();
             Console.WriteLine("Izvođači po imenu:");
-            foreach (var musician in musicianList)
-                Console.WriteLine($"{musician.Name}");   
+            musicianList.ForEach(musician => Console.WriteLine(musician.Name)); 
             Console.WriteLine("Glazbenici određene nacionalnosti:");
             foreach (var musician in musicianList)
             {
                 Console.Write(musician.Nationality+": ");
                 var musicianOfSomeNationality =
-                    musicianList.Where(nationality => nationality.Nationality == musician.Nationality);
-                foreach (var musicianNationality in musicianOfSomeNationality)
-                    Console.WriteLine(musicianNationality.Name);
+                    musicianList.Where(nationality => nationality.Nationality == musician.Nationality).ToList();
+                musicianOfSomeNationality.ForEach(element => Console.WriteLine(element.Name));
             }
 
             Console.WriteLine("Albumi grupirani po godini izadanja: ");
@@ -116,9 +114,8 @@ namespace MusicConnection
 
             Console.WriteLine("Albumi sa zadanim tekstom:");
             var tekst = "the";
-            var albumsWithSomeTextInName = albumList.Where(album => album.Name.ToLower().Contains(tekst));
-            foreach (var album in albumsWithSomeTextInName)
-                Console.WriteLine(album.Name);
+            var albumsWithSomeTextInName = albumList.Where(album => album.Name.ToLower().Contains(tekst)).ToList();
+            albumsWithSomeTextInName.ForEach(element => Console.WriteLine(element.Name));
 
             var songList = new SqlConnection(connectionString).Query<Song>("select * from Songs").ToList();
             var albumSongs= new SqlConnection(connectionString).Query<AlbumSong>("select * from AlbumSong").ToList();
